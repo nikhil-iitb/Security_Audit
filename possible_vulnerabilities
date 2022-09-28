@@ -1,0 +1,67 @@
+Vulnerability Description
+
+
+Reentrancy
+This is a vulnerability well known for its impact. The programmer may think that a non-recursive function cannot be
+re-called while it is running, but this is not always the case, as it could be the case that within the function an empty
+malicious contract is called that only contains a function of fallback that calls back the function it comes from.
+
+Exception disorder
+The treatment of exceptions in Solidity has particularities depending on whether the exception occurred in a call to a
+method directly or using the CALL primitive, which can cause vulnerabilities if a malicious user causes exceptions to
+alter the execution flow.
+
+Calls to the unknown
+Some methods of Solidity when invoked can call other methods of contracts that in principle are unknown and with
+potentially dangerous side effects.
+
+Type conversion
+Although the Solidity compiler can detect errors with types, for example if a function waits for an integer and is called
+by passing it a string, in the case of contract definitions or functions with a certain structure, in the case of calling a
+function in a contract, if the programmer makes a mistake and calls by mistake another contract but it contains a
+function with the same structure expected by the compiler, the function will be executed and if the function does not
+exist, the function of fallback will be called. In any case, no exception will be launched.
+Secrets Solidity allows you to define the visibility of fields in contracts as public or private. This can be useful if you need to
+hide certain information between contract calls. Unfortunately this system is not effective as changes in private fields
+have to be sent to mining nodes to be put into blockchain, which is public.
+
+Unpredictable state
+All smart contracts contain a status based on the values of their fields and their balance sheet. However, there is no
+guaranteed that the state of a contract when we performed a transaction is the identical to the state when that
+transaction is pulled out and placed in the blockchain. In other words, it could happen that previous to processing our
+transaction, other transactions have already changed the state of the target contract and in addition to being fast, it
+does not guarantee us anything since the miners can mine the transactions in the order they wish. There is a further
+problem caused by the nature of blockchain, which is that a chain fork could occur if two miners continue to mine a
+valid block at the same time. This would make some miners try to put their block on one of the two chains and the
+others on the other. At any moment the shorter chain would be dismissed, losing the transactions contained in it and
+changing the state of the contracts to an indeterminate state.
+
+Random numbers
+The execution of the Ethereum virtual machine code is deterministic. This means that the code executed with the same
+inputs must produce the same output in all the nodes that execute it. This presents a problem when generating
+random numbers. To simulate randomness, many contracts use a random number generator initialized with the same
+seed for all miners.
+
+Time restrictions
+Many applications have time restrictions to operate. Usually these restrictions use texttimestamps. In the case of smart
+contracts, the programmer can get the timestamp of when the block was mined, which is shared by all transactions in
+the block. The trouble is that miners in the early versions of the protocol could choose the timestamp of the block they
+were going to arbitrarily mine, which could be used to carry out attacks.
+
+Immutable bugs
+This is not a vulnerability in itself, but the consequence of a blockchain property. All the source code of smart
+contracts, including those containing bugs are immutable once they are mined and added to the blockchain, although
+they can be blocked by calling a destructor function.
+
+Loss of Ether
+If the developer is wrong to enter the address to send ether and that address exists but it is an orphan address that
+belongs to no one that ether will be lost forever.
+
+Stack size 
+Each time one contract calls another contract the associated call stack increases by one. The stack limit is 1024 and
+when the limit is reached an exception is launched. Until October 18, 2016 it was possible to take advantage of this
+to launch an attack where a malicious user increased the battery counter until almost exhausted and then called the
+victim’s function which launched an exception when the battery limit was exhausted. If the victim did not take this
+into account and does not handle the exception correctly, the attack could be successful. The impact of this
+vulnerability caused Ethereum to be redesigned.
+

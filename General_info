@@ -1,0 +1,5 @@
+Two level analysis -- Bytecode level, Solidity (high level)
+analysis
+--Dynamic (loading with inputs) -- ContractLarva is a good tool
+--Static (looking at patterns in bytecode) -- Mythril and Slither are good tools
+--Formal (Using mathematics, Z3 tools, etc) -- Manticore, Securify, Oyente, Madmax, Mythril, Vandal, EthIR, MAIAN, Osiris, Securify, Ethertrust

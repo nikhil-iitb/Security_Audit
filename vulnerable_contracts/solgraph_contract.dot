@@ -1,0 +1,10 @@
+strict digraph {
+  MyContract
+  Mint [color=gray]
+  Withdraw [color=red]
+  UNTRUSTED [shape=rectangle]
+  GetBalance [color=blue]
+  MyContract -> Mint
+  Withdraw -> UNTRUSTED
+}
+
